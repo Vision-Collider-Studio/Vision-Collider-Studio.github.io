@@ -78,7 +78,7 @@ function scrollToSection(sectionId) {
   }
 }
 
-// Initialize particles for philosophy section
+// Initialize particles for about and team sections
 function initParticles() {
   const particlesContainer = document.getElementById("particles");
   const particleCount = 15;
@@ -395,7 +395,7 @@ function updateActiveNav() {
 
 window.addEventListener("scroll", updateActiveNav);
 
-// Animated counter for stats
+// Animated counter for numbers
 function animateCounter(element) {
   const target = parseInt(element.dataset.target);
   const duration = 2000;
@@ -413,7 +413,7 @@ function animateCounter(element) {
   }, 16);
 }
 
-// Intersection Observer for stats animation
+// Intersection Observer for number counter animation
 const observerOptions = {
   threshold: 0.5,
   rootMargin: "0px 0px -100px 0px",
@@ -433,9 +433,9 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, observerOptions);
 
-const statsSection = document.querySelector(".stats-section");
-if (statsSection) {
-  observer.observe(statsSection);
+const projectsSection = document.querySelector(".projects-section");
+if (projectsSection) {
+  observer.observe(projectsSection);
 }
 
 // Loading screen
