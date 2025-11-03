@@ -30,9 +30,9 @@ const portfolioData = [
     id: 4,
     title: "No Need For Speed",
     description:
-      "Co-op multiplayer Formula-style racing game focused on teamwork, not speed.",
+      "Co-op Formula racing prototype for exploring Unity networking features.",
     image: "images/nnfs.gif",
-    tech: ["Unity", "Racing", "Play on Browser"],
+    tech: ["Unity", "Racing"],
     link: "https://github.com/KenanAegean/No-Need-For-Speed",
   },
   {
@@ -454,3 +454,23 @@ window.addEventListener("scroll", () => {
     parallax.style.transform = `translateY(${scrolled * 0.5}px)`;
   }
 });
+
+// --- External link policy: open in new tab with noopener/noreferrer ---
+document.addEventListener("DOMContentLoaded", function () {
+  const anchors = document.querySelectorAll('a[href^="http"]');
+  anchors.forEach(a => {
+    try {
+      const url = new URL(a.getAttribute("href"), window.location.href);
+      if (url.origin !== window.location.origin) {
+        a.setAttribute("target", "_blank");
+        // Preserve existing rel while ensuring noopener/noreferrer are present
+        const existingRel = (a.getAttribute("rel") || "").split(/\s+/).filter(Boolean);
+        const relSet = new Set(existingRel.concat(["noopener", "noreferrer"]));
+        a.setAttribute("rel", Array.from(relSet).join(" "));
+      }
+    } catch (e) {
+      // Ignore invalid URLs
+    }
+  });
+});
+// --- End external link policy ---

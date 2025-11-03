@@ -1662,7 +1662,7 @@ a.info-item {
 	}
 
 	.carousel-controls {
-		bottom: -80px;
+		bottom: -60px;
 		gap: 15px;
 		z-index: 200;
 	}
@@ -1877,3 +1877,20 @@ a.info-item {
 /* ============================================================================
    END OF STYLESHEET
 ============================================================================ */
+
+/* ---- Button-link reset for .card-cta (ensures no underline) ---- */
+a.card-cta {
+  text-decoration: none;
+}
+a.card-cta:hover,
+a.card-cta:focus,
+a.card-cta:active {
+  text-decoration: none;
+}
+/* Keep existing button visuals */
+a.card-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+/* ---- End button-link reset ---- */
