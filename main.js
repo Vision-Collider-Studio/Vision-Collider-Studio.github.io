@@ -6,6 +6,7 @@ const portfolioData = [
       "Rogue-like card battler inspired by the classic Turkish game 'Okey'.",
     image: "images/riziko.gif",
     tech: ["Unity", "Card Game", "Play on Browser"],
+    link: "https://kenanaegean.github.io/Riziko_WebGL/",
   },
   {
     id: 2,
@@ -14,6 +15,7 @@ const portfolioData = [
       "A 2D pixel-art platformer featuring challenging obstacles and adventure gameplay.",
     image: "images/waye.gif",
     tech: ["Unity", "Platformer", "Play on Browser"],
+    link: "https://github.com/KenanAegean/WayEscape-2D-Unity-Game-Demo",
   },
   {
     id: 3,
@@ -22,6 +24,7 @@ const portfolioData = [
       "Fast-paced bullet-hell survival game with swarming enemy waves.",
     image: "images/sboop2.gif",
     tech: ["Unity", "Bullet Hell", "Play on Browser"],
+    link: "https://kenanege.itch.io/swarmbreaker",
   },
   {
     id: 4,
@@ -30,6 +33,7 @@ const portfolioData = [
       "Co-op multiplayer Formula-style racing game focused on teamwork, not speed.",
     image: "images/nnfs.gif",
     tech: ["Unity", "Racing", "Play on Browser"],
+    link: "https://github.com/KenanAegean/No-Need-For-Speed",
   },
   {
     id: 5,
@@ -38,6 +42,7 @@ const portfolioData = [
       "Classic Snake game built in C++ and played in the terminal.",
     image: "images/sccp.gif",
     tech: ["C++", "Retro"],
+    link: "https://github.com/KenanAegean/Snake-Game-Cpp",
   },
   {
     id: 6,
@@ -46,6 +51,7 @@ const portfolioData = [
       "Visual demo showcasing A* pathfinding in a grid-based environment.",
     image: "images/pathFind.gif",
     tech: ["Unity", "Algorithm", "Test on Browser"],
+    link: "https://github.com/KenanAegean/Ai-PathFinding-Project",
   },
   {
     id: 7,
@@ -54,6 +60,7 @@ const portfolioData = [
       "Retro-style shooter featuring a custom CRT TV shader effect.",
     image: "images/shader1.gif",
     tech: ["Unity", "Shader Programming", "Shooter"],
+    link: "https://github.com/KenanAegean/FG-Shader",
   },
 ];
 
@@ -110,8 +117,11 @@ function createCarouselItem(data, index) {
     .map((tech) => `<span class="tech-badge">${tech}</span>`)
     .join("");
 
+  const cardClass = data.link ? 'card clickable-card' : 'card';
+  const cursorStyle = data.link ? 'cursor: pointer;' : '';
+
   item.innerHTML = `
-                <div class="card">
+                <div class="${cardClass}" style="${cursorStyle}" data-link="${data.link || ''}">
                     <div class="card-number">0${data.id}</div>
                     <div class="card-image">
                         <img src="${data.image}" alt="${data.title}">
@@ -121,6 +131,13 @@ function createCarouselItem(data, index) {
                     <div class="card-tech">${techBadges}</div>
                 </div>
             `;
+
+  if (data.link) {
+    const card = item.querySelector('.card');
+    card.addEventListener('click', function() {
+      window.open(data.link, '_blank');
+    });
+  }
 
   return item;
 }
@@ -249,19 +266,49 @@ function prevSlide() {
 function goToSlide(index) {
   currentIndex = index;
   updateCarousel();
+  resetTimer();
 }
 
-// Event listeners
-document.getElementById("nextBtn").addEventListener("click", nextSlide);
-document.getElementById("prevBtn").addEventListener("click", prevSlide);
+// Auto-rotate carousel with timer reset capability
+let autoRotateInterval;
 
-// Auto-rotate carousel
-setInterval(nextSlide, 5000);
+function startAutoRotate() {
+  // Clear existing interval if any
+  if (autoRotateInterval) {
+    clearInterval(autoRotateInterval);
+  }
+  // Start new interval
+  autoRotateInterval = setInterval(nextSlide, 5000);
+}
+
+function resetTimer() {
+  startAutoRotate();
+}
+
+// Event listeners with timer reset
+document.getElementById("nextBtn").addEventListener("click", () => {
+  nextSlide();
+  resetTimer();
+});
+
+document.getElementById("prevBtn").addEventListener("click", () => {
+  prevSlide();
+  resetTimer();
+});
+
+// Start auto-rotation
+startAutoRotate();
 
 // Keyboard navigation
 document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowLeft") prevSlide();
-  if (e.key === "ArrowRight") nextSlide();
+  if (e.key === "ArrowLeft") {
+    prevSlide();
+    resetTimer();
+  }
+  if (e.key === "ArrowRight") {
+    nextSlide();
+    resetTimer();
+  }
 });
 
 // Update carousel on window resize
